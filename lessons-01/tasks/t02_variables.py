@@ -14,7 +14,7 @@ def task_07(numbers):
         task_07([7]) == (7, 7)
         task_07([-2, -5, -1]) == (-5, -1)
     """
-    raise NotImplementedError("Реализуйте task_07")
+    return (min(numbers), max(numbers))
 
 
 def task_08(total):
@@ -29,7 +29,7 @@ def task_08(total):
         task_08(250.5) == 300.6
         task_08(0) == 0.0
     """
-    raise NotImplementedError("Реализуйте task_08")
+    return round(total * (1 + TAX_RATE), 2)
 
 
 def task_09(items, item):
@@ -42,7 +42,7 @@ def task_09(items, item):
         task_09([1, 2], 3) == [1, 2, 3]
         task_09([], "a") == ["a"]
     """
-    raise NotImplementedError("Реализуйте task_09")
+    return items + [item]
 
 
 def task_10(values):
@@ -55,7 +55,7 @@ def task_10(values):
         task_10([]) == []
         task_10(["007"]) == [7]
     """
-    raise NotImplementedError("Реализуйте task_10")
+    return [int(v) for v in values]
 
 
 def task_11(k):
@@ -69,7 +69,9 @@ def task_11(k):
         task_11(0.5)(10) == 5.0
         f = task_11(7); f(2) == 14; f(3) == 21
     """
-    raise NotImplementedError("Реализуйте task_11")
+    def multiplier(x):
+        return x * k
+    return multiplier
 
 
 def task_12(box, key, value):
@@ -84,4 +86,5 @@ def task_12(box, key, value):
         task_12(d, "b", 2) is d  # True
         d == {"a": 1, "b": 2}    # True — словарь изменился
     """
-    raise NotImplementedError("Реализуйте task_12")
+    box[key] = value
+    return box
