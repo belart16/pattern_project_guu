@@ -12,7 +12,7 @@ def task_01(a, b, c):
         task_01(1, 2, 3) == 2.0
         task_01(10, 20, 40) == 23.333333333333332
     """
-    raise NotImplementedError("Реализуйте task_01")
+    return (a + b + c) / 3
 
 
 def task_02(total_seconds):
@@ -26,7 +26,9 @@ def task_02(total_seconds):
         task_02(59) == (0, 0, 59)
         task_02(0) == (0, 0, 0)
     """
-    raise NotImplementedError("Реализуйте task_02")
+    hours, rest = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(rest, 60)
+    return (hours, minutes, seconds)
 
 
 def task_03(fahrenheit):
@@ -39,7 +41,7 @@ def task_03(fahrenheit):
         task_03(32) == 0.0
         task_03(98.6) == pytest.approx(37.0)
     """
-    raise NotImplementedError("Реализуйте task_03")
+    return (fahrenheit - 32) * 5 / 9
 
 
 def task_04(price, discount_percent):
@@ -53,7 +55,7 @@ def task_04(price, discount_percent):
         task_04(199.99, 10) == 179.99
         task_04(500, 0) == 500.0
     """
-    raise NotImplementedError("Реализуйте task_04")
+    return round(price * (1 - discount_percent / 100), 2)
 
 
 def task_05(x, y):
@@ -68,7 +70,7 @@ def task_05(x, y):
         task_05(-1, 1) == "-1 + 1 = 0"
         task_05(1.5, 2) == "1.5 + 2 = 3.5"
     """
-    raise NotImplementedError("Реализуйте task_05")
+    return f"{x} + {y} = {x + y}"
 
 
 def task_06(name):
@@ -83,4 +85,4 @@ def task_06(name):
         task_06("иван") == "Иван"
         task_06("  ЖАН-КЛОД  ван дАММ ") == "Жан-клод Ван Дамм"
     """
-    raise NotImplementedError("Реализуйте task_06")
+    return " ".join(word.capitalize() for word in name.split())
