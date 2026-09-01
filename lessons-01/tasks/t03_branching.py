@@ -11,7 +11,12 @@ def task_13(n):
         task_13(-3) == -1
         task_13(0) == 0
     """
-    raise NotImplementedError("Реализуйте task_13")
+    if n > 0:
+        return 1
+    elif n < 0:
+        return -1
+    else:
+        return 0
 
 
 def task_14(score):
@@ -29,7 +34,14 @@ def task_14(score):
         task_14(60) == "удовлетворительно"
         task_14(59) == "неудовлетворительно"
     """
-    raise NotImplementedError("Реализуйте task_14")
+    if score >= 90:
+        return "отлично"
+    elif score >= 75:
+        return "хорошо"
+    elif score >= 60:
+        return "удовлетворительно"
+    else:
+        return "неудовлетворительно"
 
 
 def task_15(age, is_citizen):
@@ -44,7 +56,7 @@ def task_15(age, is_citizen):
         task_15(17, True) == False
         task_15(18, True) == True
     """
-    raise NotImplementedError("Реализуйте task_15")
+    return age >= 18 and is_citizen
 
 
 def task_16(password):
@@ -62,7 +74,10 @@ def task_16(password):
         task_16("StrongPass") == False   # нет цифры
         task_16("Str1") == False         # короткий
     """
-    raise NotImplementedError("Реализуйте task_16")
+    long_enough = len(password) >= 8
+    has_upper = any(c.isupper() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    return long_enough and has_upper and has_digit
 
 
 def task_17(year):
@@ -77,8 +92,10 @@ def task_17(year):
         task_17(1900) == False   # делится на 100, но не на 400
         task_17(2000) == True    # делится на 400
     """
-    raise NotImplementedError("Реализуйте task_17")
+    return (year % 4 == 0 and year % 100 != 0) or year % 400 == 0
 
+
+import operator
 
 def task_18(op, a, b):
     """Калькулятор через словарь операций.
@@ -96,4 +113,14 @@ def task_18(op, a, b):
         task_18("/", 5, 0) is None
         task_18("^", 2, 3) is None
     """
-    raise NotImplementedError("Реализуйте task_18")
+    operations = {
+        "+": operator.add,
+        "-": operator.sub,
+        "*": operator.mul,
+        "/": operator.truediv,
+    }
+    if op not in operations:
+        return None
+    if op == "/" and b == 0:
+        return None
+    return operations[op](a, b)
