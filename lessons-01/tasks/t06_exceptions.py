@@ -12,7 +12,10 @@ def task_31(a, b):
         task_31(9, 3) == 3.0
         task_31(1, 0) is None
     """
-    raise NotImplementedError("Реализуйте task_31")
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return None
 
 
 def task_32(text):
@@ -27,7 +30,10 @@ def task_32(text):
         task_32("4.2") is None
         task_32("abc") is None
     """
-    raise NotImplementedError("Реализуйте task_32")
+    try:
+        return int(text)
+    except ValueError:
+        return None
 
 
 def task_33(path):
@@ -41,7 +47,11 @@ def task_33(path):
         task_33(<путь>) == "привет"
         task_33(<несуществующий путь>) == ""
     """
-    raise NotImplementedError("Реализуйте task_33")
+    try:
+        with open(path, encoding="utf-8") as f:
+            return f.readline().rstrip("\n")
+    except FileNotFoundError:
+        return ""
 
 
 def task_34(n):
@@ -56,7 +66,9 @@ def task_34(n):
         with pytest.raises(ValueError, match="неотрицательное"):
             task_34(-1)
     """
-    raise NotImplementedError("Реализуйте task_34")
+    if n < 0:
+        raise ValueError("n должно быть неотрицательное")
+    return n
 
 
 def task_35(items, index):
@@ -71,7 +83,10 @@ def task_35(items, index):
         task_35([10, 20, 30], 5) == "индекс вне диапазона"
         task_35([], 0) == "индекс вне диапазона"
     """
-    raise NotImplementedError("Реализуйте task_35")
+    try:
+        return items[index]
+    except IndexError:
+        return "индекс вне диапазона"
 
 
 def task_36(text):
@@ -88,4 +103,10 @@ def task_36(text):
         task_36("7.5") == 7.5 and isinstance(task_36("7.5"), float)
         task_36("abc") is None
     """
-    raise NotImplementedError("Реализуйте task_36")
+    try:
+        return int(text)
+    except ValueError:
+        try:
+            return float(text)
+        except ValueError:
+            return None
