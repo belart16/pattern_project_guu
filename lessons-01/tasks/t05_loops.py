@@ -12,7 +12,11 @@ def task_25(n):
         task_25(0) == 0
         task_25(999) == 27
     """
-    raise NotImplementedError("Реализуйте task_25")
+    total = 0
+    while n > 0:
+        total += n % 10
+        n //= 10
+    return total
 
 
 def task_26(n):
@@ -26,7 +30,10 @@ def task_26(n):
         task_26(5) == 120
         task_26(10) == 3628800
     """
-    raise NotImplementedError("Реализуйте task_26")
+    result = 1
+    for i in range(1, n + 1):
+        result *= i
+    return result
 
 
 def task_27(n):
@@ -39,7 +46,13 @@ def task_27(n):
         task_27(3) == [[1, 2, 3], [2, 4, 6], [3, 6, 9]]
         task_27(1) == [[1]]
     """
-    raise NotImplementedError("Реализуйте task_27")
+    table = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            row.append((i + 1) * (j + 1))
+        table.append(row)
+    return table
 
 
 def task_28(names, days):
@@ -52,7 +65,7 @@ def task_28(names, days):
         task_28(["январь", "февраль"], [31, 28]) == {"январь": 31, "февраль": 28}
         task_28([], []) == {}
     """
-    raise NotImplementedError("Реализуйте task_28")
+    return dict(zip(names, days))
 
 
 def task_29(numbers):
@@ -66,7 +79,7 @@ def task_29(numbers):
         task_29([1, 3]) == []
         task_29([]) == []
     """
-    raise NotImplementedError("Реализуйте task_29")
+    return [n ** 2 for n in numbers if n % 2 == 0]
 
 
 def task_30(numbers, stop_value):
@@ -81,4 +94,9 @@ def task_30(numbers, stop_value):
         task_30([1, 2], 99) == 3
         task_30([0, 1, 2], 0) == 0
     """
-    raise NotImplementedError("Реализуйте task_30")
+    total = 0
+    for value in numbers:
+        if value == stop_value:
+            break
+        total += value
+    return total
