@@ -1,5 +1,6 @@
 """Домашнее задание. Тема 4: коллекции."""
 
+from collections import Counter
 
 def hw_11(text):
     """Самое частое слово.
@@ -13,7 +14,8 @@ def hw_11(text):
         hw_11("а б а б") == "а"
         hw_11("один") == "один"
     """
-    raise NotImplementedError("Реализуйте hw_11")
+    counts = Counter(text.split())
+    return counts.most_common(1)[0][0]
 
 
 def hw_12(matrix):
@@ -28,7 +30,7 @@ def hw_12(matrix):
         hw_12([]) == []
         hw_12([[10]]) == [10]
     """
-    raise NotImplementedError("Реализуйте hw_12")
+    return [sum(row) for row in matrix]
 
 
 def hw_13(items):
@@ -42,7 +44,13 @@ def hw_13(items):
         hw_13(["a", "b", "a", "a"]) == ["a", "b"]
         hw_13([]) == []
     """
-    raise NotImplementedError("Реализуйте hw_13")
+    seen = set()
+    result = []
+    for item in items:
+        if item not in seen:
+            seen.add(item)
+            result.append(item)
+    return result
 
 
 def hw_14(mapping):
@@ -57,4 +65,4 @@ def hw_14(mapping):
         hw_14({}) == {}
         hw_14({"x": (1, 2)}) == {(1, 2): "x"}
     """
-    raise NotImplementedError("Реализуйте hw_14")
+    return {value: key for key, value in mapping.items()}
