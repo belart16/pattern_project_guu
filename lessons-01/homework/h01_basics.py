@@ -14,8 +14,12 @@ def hw_01(total_seconds):
         hw_01(3600) == "01:00:00"
         hw_01(86399) == "23:59:59"
     """
-    raise NotImplementedError("Реализуйте hw_01")
+    hours, rest = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(rest, 60)
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
+
+import math
 
 def hw_02(a, b, c):
     """Площадь треугольника по формуле Герона.
@@ -28,7 +32,9 @@ def hw_02(a, b, c):
         hw_02(5, 5, 6) == 12.0
         hw_02(1, 1, 1.4142135623730951) == 0.5
     """
-    raise NotImplementedError("Реализуйте hw_02")
+    s = (a + b + c) / 2
+    area = math.sqrt(s * (s - a) * (s - b) * (s - c))
+    return round(area, 2)
 
 
 def hw_03(card_number):
@@ -42,7 +48,9 @@ def hw_03(card_number):
         hw_03("1234") == "1234"
         hw_03("987210") == "**7210"
     """
-    raise NotImplementedError("Реализуйте hw_03")
+    visible = card_number[-4:]
+    stars = "*" * (len(card_number) - 4)
+    return stars + visible
 
 
 def hw_04(x, y):
@@ -56,4 +64,4 @@ def hw_04(x, y):
         hw_04(10, 4) == "10 / 4 = 2.50"
         hw_04(1, 2) == "1 / 2 = 0.50"
     """
-    raise NotImplementedError("Реализуйте hw_04")
+    return f"{x} / {y} = {x / y:.2f}"
