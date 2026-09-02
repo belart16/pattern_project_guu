@@ -13,7 +13,12 @@ def hw_15(n):
         hw_15(0) == []
         hw_15(8) == [0, 1, 1, 2, 3, 5, 8, 13]
     """
-    raise NotImplementedError("Реализуйте hw_15")
+    result = []
+    a, b = 0, 1
+    for _ in range(n):
+        result.append(a)
+        a, b = b, a + b
+    return result
 
 
 def hw_16(n):
@@ -31,7 +36,14 @@ def hw_16(n):
         hw_16(97) == True
         hw_16(7919) == True
     """
-    raise NotImplementedError("Реализуйте hw_16")
+    if n < 2:
+        return False
+    for divisor in range(2, int(n ** 0.5) + 1):
+        if n % divisor == 0:
+            break
+    else:
+        return True
+    return False
 
 
 def hw_17(n):
@@ -48,4 +60,14 @@ def hw_17(n):
         hw_17(15)[-1] == "fizzbuzz"
         hw_17(0) == []
     """
-    raise NotImplementedError("Реализуйте hw_17")
+    result = []
+    for i in range(1, n + 1):
+        if i % 3 == 0 and i % 5 == 0:
+            result.append("fizzbuzz")
+        elif i % 3 == 0:
+            result.append("fizz")
+        elif i % 5 == 0:
+            result.append("buzz")
+        else:
+            result.append(str(i))
+    return result
