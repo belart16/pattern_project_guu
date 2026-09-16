@@ -16,7 +16,8 @@ def task_19(n):
         # следующий next(g) возбуждает StopIteration
         list(task_19(0)) == []
     """
-    raise NotImplementedError("Реализуйте task_19")
+    for i in range(1, n + 1):
+        yield i * 2
 
 
 def task_20(n):
@@ -29,7 +30,8 @@ def task_20(n):
         list(task_20(3)) == [3, 2, 1, 0]
         list(task_20(0)) == [0]
     """
-    raise NotImplementedError("Реализуйте task_20")
+    for i in range(n, -1, -1):
+        yield i
 
 
 def task_21(n):
@@ -45,7 +47,7 @@ def task_21(n):
         next(g) == 9
         # следующий next(g) возбуждает StopIteration
     """
-    raise NotImplementedError("Реализуйте task_21")
+    return (i ** 2 for i in range(1, n + 1))
 
 
 def task_22():
@@ -59,7 +61,10 @@ def task_22():
         from itertools import islice
         list(islice(task_22(), 8)) == [0, 1, 1, 2, 3, 5, 8, 13]
     """
-    raise NotImplementedError("Реализуйте task_22")
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
 
 
 def task_23(items):
@@ -73,7 +78,11 @@ def task_23(items):
         list(task_23(["a", "a", "a"])) == ["a"]
         list(task_23([])) == []
     """
-    raise NotImplementedError("Реализуйте task_23")
+    seen = set()
+    for item in items:
+        if item not in seen:
+            seen.add(item)
+            yield item
 
 
 def task_24(nested):
@@ -87,4 +96,5 @@ def task_24(nested):
         list(task_24([])) == []
         list(task_24([[], []])) == []
     """
-    raise NotImplementedError("Реализуйте task_24")
+    for sublist in nested:
+        yield from sublist
