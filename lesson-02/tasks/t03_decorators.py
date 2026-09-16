@@ -14,7 +14,14 @@ def task_13(start=0):
         c10 = task_13(10)
         c10() == 11; c10() == 12
     """
-    raise NotImplementedError("Реализуйте task_13")
+    count = start
+
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+
+    return counter
 
 
 def task_14(func):
@@ -34,7 +41,12 @@ def task_14(func):
         double(3) == 6
         double.calls == 2
     """
-    raise NotImplementedError("Реализуйте task_14")
+    def wrapper(*args, **kwargs):
+        wrapper.calls += 1
+        return func(*args, **kwargs)
+
+    wrapper.calls = 0
+    return wrapper
 
 
 def task_15(func):
@@ -54,7 +66,15 @@ def task_15(func):
 
         add(1, 2) == 3
     """
-    raise NotImplementedError("Реализуйте task_15")
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+
+        if isinstance(result, str):
+            return result.upper()
+
+        return result
+
+    return wrapper
 
 
 def task_16(func):
@@ -77,7 +97,15 @@ def task_16(func):
         fast(3) == 9
         calls == [2, 3]
     """
-    raise NotImplementedError("Реализуйте task_16")
+    cache = {}
+
+    def wrapper(*args):
+        if args not in cache:
+            cache[args] = func(*args)
+
+        return cache[args]
+
+    return wrapper
 
 
 def task_17(func):
@@ -96,7 +124,18 @@ def task_17(func):
         sub(10, -4)  # ValueError ... неотрицательными ...
         sub(a=1, b=-2)  # ValueError
     """
-    raise NotImplementedError("Реализуйте task_17")
+    def wrapper(*args, **kwargs):
+        for value in args:
+            if isinstance(value, (int, float)) and value < 0:
+                raise ValueError("Все аргументы должны быть неотрицательными")
+
+        for value in kwargs.values():
+            if isinstance(value, (int, float)) and value < 0:
+                raise ValueError("Все аргументы должны быть неотрицательными")
+
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 def task_18(times):
@@ -117,4 +156,15 @@ def task_18(times):
 
         nothing() == []
     """
-    raise NotImplementedError("Реализуйте task_18")
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            results = []
+
+            for _ in range(times):
+                results.append(func(*args, **kwargs))
+
+            return results
+
+        return wrapper
+
+    return decorator
