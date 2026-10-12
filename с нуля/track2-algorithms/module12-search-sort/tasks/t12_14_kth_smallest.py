@@ -13,5 +13,12 @@ kth_smallest([9, 2], 1)        → 2
 
 
 def kth_smallest(items, k):
-    # TODO: k раз: найти минимум, удалить его
-    pass
+    if k < 1 or k > len(items):
+        raise ValueError("k is out of bounds")
+
+    items_copy = items.copy()
+    for _ in range(k - 1):
+        min_value = min(items_copy)
+        items_copy.remove(min_value)
+
+    return min(items_copy)

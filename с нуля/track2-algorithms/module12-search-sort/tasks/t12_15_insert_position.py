@@ -14,5 +14,13 @@ insert_position([1, 3, 5], 9) → 3
 
 
 def insert_position(items, x):
-    # TODO: линейный проход до первого элемента >= x
-    pass
+    left, right = 0, len(items)
+
+    while left < right:
+        mid = (left + right) // 2
+        if items[mid] < x:
+            left = mid + 1
+        else:
+            right = mid
+
+    return left

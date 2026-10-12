@@ -12,5 +12,4 @@ sort_dict_by_value({"а": 2, "б": 3, "в": 2}) → [("б", 3), ("а", 2), ("в"
 
 
 def sort_dict_by_value(d):
-    # TODO: sorted(d.items(), key=lambda p: (-p[1], p[0]))
-    pass
+    return sorted(d.items(), key=lambda item: (-item[1], item[0]))
