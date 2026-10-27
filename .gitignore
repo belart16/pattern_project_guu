@@ -1,0 +1,6 @@
+
+# Резервные копии вложенных Git-репозиториев
+lesson-03/.git_backup/
+lesson-04/.git_backup/
+lesson-03_backup/
+lesson-04_backup/
