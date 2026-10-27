@@ -16,18 +16,21 @@ class Animal:
     """
 
     def __init__(self, name):
-        raise NotImplementedError("Реализуйте Animal.__init__")
+        self.name = name
 
     def speak(self):
-        raise NotImplementedError("Реализуйте Animal.speak")
+        return "неизвестный звук"
 
 
 class Dog(Animal):
-    pass
+    def speak(self):
+        return "гав"
+
 
 
 class Cat(Animal):
-    pass
+    def speak(self):
+        return "мяу"
 
 
 class Employee:
@@ -48,16 +51,17 @@ class Employee:
     """
 
     def __init__(self, name, salary):
-        raise NotImplementedError("Реализуйте Employee.__init__")
+        self.name = name
+        self.salary = salary
 
 
 class Manager(Employee):
     def __init__(self, name, salary, team_size):
-        raise NotImplementedError("Реализуйте Manager.__init__ (вызовите super())")
+        super().__init__(name, salary)
+        self.team_size = team_size
 
     def team(self):
-        raise NotImplementedError("Реализуйте Manager.team")
-
+        return f"команда из {self.team_size}"
 
 class Vehicle:
     """Задание 15. super() в переопределённом методе.
@@ -74,18 +78,19 @@ class Vehicle:
     """
 
     def __init__(self, max_speed):
-        raise NotImplementedError("Реализуйте Vehicle.__init__")
+        self.max_speed = max_speed
 
     def drive(self):
-        raise NotImplementedError("Реализуйте Vehicle.drive")
+        return f"еду со скоростью {self.max_speed}"
 
 
 class ElectricCar(Vehicle):
     def __init__(self, max_speed, battery):
-        raise NotImplementedError("Реализуйте ElectricCar.__init__")
+        super().__init__(max_speed)
+        self.battery = battery
 
     def drive(self):
-        raise NotImplementedError("Реализуйте ElectricCar.drive (через super())")
+        return f"{super().drive()} (электро, запас {self.battery} кВт·ч)"
 
 
 class Employee2:
@@ -102,18 +107,21 @@ class Employee2:
     """
 
     def __init__(self, name, salary):
-        raise NotImplementedError("Реализуйте Employee2.__init__")
+        self.name = name
+        self.salary = salary
 
     def monthly_pay(self):
-        raise NotImplementedError("Реализуйте Employee2.monthly_pay")
+        return self.salary
 
 
 class SalesEmployee(Employee2):
     def __init__(self, name, salary, sales, rate):
-        raise NotImplementedError("Реализуйте SalesEmployee.__init__")
+        super().__init__(name, salary)
+        self.sales = sales
+        self.rate = rate
 
     def monthly_pay(self):
-        raise NotImplementedError("Реализуйте SalesEmployee.monthly_pay (через super())")
+        return super().monthly_pay() + self.sales * self.rate
 
 
 class SortedList(list):
@@ -133,7 +141,12 @@ class SortedList(list):
     """
 
     def append(self, item):
-        raise NotImplementedError("Реализуйте SortedList.append")
+        
+        index = 0
+        while index < len(self) and self[index] < item:
+            index += 1
+        
+        super().insert(index, item)
 
 
 class Worker:
@@ -152,20 +165,18 @@ class Worker:
     """
 
     def __init__(self, name):
-        raise NotImplementedError("Реализуйте Worker.__init__")
+        self.name = name
 
     def describe(self):
-        raise NotImplementedError("Реализуйте Worker.describe")
-
+        return f"{self.name} работает"
 
 class OfficeWorker(Worker):
     def describe(self):
-        raise NotImplementedError("Реализуйте OfficeWorker.describe (через super())")
-
+        return f"{super().describe()} в офисе"
 
 class Director(OfficeWorker):
     def describe(self):
-        raise NotImplementedError("Реализуйте Director.describe (через super())")
+        return f"{super().describe()}, руководит"
 
 
 class Transport:
@@ -187,7 +198,7 @@ class Transport:
     wheels = 4
 
     def info(self):
-        raise NotImplementedError("Реализуйте Transport.info")
+        return f"колёс: {self.wheels}"
 
 
 class Bike(Transport):
@@ -213,18 +224,19 @@ class Wallet:
     """
 
     def __init__(self):
-        raise NotImplementedError("Реализуйте Wallet.__init__")
+        self.balance = 0
 
     def add(self, amount):
-        raise NotImplementedError("Реализуйте Wallet.add")
+        self.balance += amount
 
 
 class BonusWallet(Wallet):
     def __init__(self):
-        raise NotImplementedError("Реализуйте BonusWallet.__init__ (вызовите super())")
+        super().__init__()
+        self.bonus = 0
 
     def add_bonus(self, points):
-        raise NotImplementedError("Реализуйте BonusWallet.add_bonus")
+        self.bonus += points
 
 
 class Bird:
@@ -243,16 +255,16 @@ class Bird:
     """
 
     def fly(self):
-        raise NotImplementedError("Реализуйте Bird.fly")
+        return "лечу"
 
 
 class Penguin(Bird):
     def fly(self):
-        raise NotImplementedError("Реализуйте Penguin.fly")
+        return "не умею летать"
 
 
 def task_21(birds):
-    raise NotImplementedError("Реализуйте task_21")
+    return [bird.fly() for bird in birds]
 
 
 def task_22(animals):
@@ -267,7 +279,7 @@ def task_22(animals):
             == ["Рекс", "Шарик"]
         task_22([]) == []
     """
-    raise NotImplementedError("Реализуйте task_22")
+    return [animal.name for animal in animals if isinstance(animal, Dog)]
 
 
 class Polygon:
@@ -286,10 +298,10 @@ class Polygon:
     """
 
     def __init__(self, sides):
-        raise NotImplementedError("Реализуйте Polygon.__init__")
+        self.sides = sides
 
     def perimeter(self):
-        raise NotImplementedError("Реализуйте Polygon.perimeter")
+        return sum(self.sides)
 
     def name(self):
         raise NotImplementedError("переопределите name")
@@ -297,7 +309,7 @@ class Polygon:
 
 class Triangle(Polygon):
     def name(self):
-        raise NotImplementedError("Реализуйте Triangle.name")
+        return "треугольник"
 
 
 def task_24(employees):
@@ -314,4 +326,4 @@ def task_24(employees):
             == [("Иван", 50000), ("Анна", 60000.0)]
         task_24([]) == []
     """
-    raise NotImplementedError("Реализуйте task_24")
+    return [(employee.name, employee.monthly_pay()) for employee in employees]
