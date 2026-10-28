@@ -19,13 +19,15 @@ class Formatter:
     """
 
     def __init__(self, strategy=None):
-        raise NotImplementedError("Реализуйте Formatter.__init__")
+        self.strategy = strategy
 
     def set_strategy(self, strategy):
-        raise NotImplementedError("Реализуйте Formatter.set_strategy")
+        self.strategy = strategy
 
     def render(self, text):
-        raise NotImplementedError("Реализуйте Formatter.render")
+        if self.strategy is None:
+            return text
+        return self.strategy(text)
 
 
 class SortAscending:
@@ -44,20 +46,20 @@ class SortAscending:
     """
 
     def sort(self, data):
-        raise NotImplementedError("Реализуйте SortAscending.sort")
+        return sorted(data)
 
 
 class SortDescending:
     def sort(self, data):
-        raise NotImplementedError("Реализуйте SortDescending.sort")
+        return sorted(data, reverse=True)
 
 
 class Sorter:
     def __init__(self, strategy):
-        raise NotImplementedError("Реализуйте Sorter.__init__")
+        self.strategy = strategy
 
     def sort(self, data):
-        raise NotImplementedError("Реализуйте Sorter.sort")
+        return self.strategy.sort(data)
 
 
 class WalkMode:
@@ -75,23 +77,24 @@ class WalkMode:
     """
 
     def move(self):
-        raise NotImplementedError("Реализуйте WalkMode.move")
+        return "иду"
 
 
 class FlyMode:
     def move(self):
-        raise NotImplementedError("Реализуйте FlyMode.move")
+        return "лечу"
 
 
 class Robot:
     def __init__(self, name, mode):
-        raise NotImplementedError("Реализуйте Robot.__init__")
+        self.name = name
+        self.mode = mode
 
     def set_mode(self, mode):
-        raise NotImplementedError("Реализуйте Robot.set_mode")
+        self.mode = mode
 
     def move(self):
-        raise NotImplementedError("Реализуйте Robot.move")
+        return self.mode.move()
 
 
 class ConsoleChannel:
@@ -108,20 +111,20 @@ class ConsoleChannel:
     """
 
     def send(self, message):
-        raise NotImplementedError("Реализуйте ConsoleChannel.send")
+        return f"[консоль] {message}"
 
 
 class EmailChannel:
     def send(self, message):
-        raise NotImplementedError("Реализуйте EmailChannel.send")
+        return f"[почта] {message}"
 
 
 class NotificationSender:
     def __init__(self, channel):
-        raise NotImplementedError("Реализуйте NotificationSender.__init__")
+        self.channel = channel
 
     def send(self, message):
-        raise NotImplementedError("Реализуйте NotificationSender.send")
+        return self.channel.send(message)
 
 
 class Validator:
@@ -144,10 +147,14 @@ class Validator:
     """
 
     def __init__(self, rules):
-        raise NotImplementedError("Реализуйте Validator.__init__")
+        self.rules = rules
 
     def validate(self, value):
-        raise NotImplementedError("Реализуйте Validator.validate")
+        return [
+            name
+            for name, predicate in self.rules
+            if not predicate(value)
+        ]
 
 
 class Learner:
@@ -175,26 +182,32 @@ class Learner:
     """
 
     def __init__(self):
-        raise NotImplementedError("Реализуйте Learner.__init__")
+        self.courses = []
 
     def enrol(self, course):
-        raise NotImplementedError("Реализуйте Learner.enrol")
+        self.courses.append(course)
 
 
 class Teacher:
     def __init__(self):
-        raise NotImplementedError("Реализуйте Teacher.__init__")
+        self.courses_taught = []
 
     def assign_teaching(self, course):
-        raise NotImplementedError("Реализуйте Teacher.assign_teaching")
+        self.courses_taught.append(course)
 
 
 class Person:
     def __init__(self, name, learner=None, teacher=None):
-        raise NotImplementedError("Реализуйте Person.__init__")
+        self.name = name
+        self.learner = learner
+        self.teacher = teacher
 
     def enrol(self, course):
-        raise NotImplementedError("Реализуйте Person.enrol (делегирование)")
+        if self.learner is None:
+            raise RuntimeError("нет компонента learner")
+        self.learner.enrol(course)
 
     def assign_teaching(self, course):
-        raise NotImplementedError("Реализуйте Person.assign_teaching (делегирование)")
+        if self.teacher is None:
+            raise RuntimeError("нет компонента teacher")
+        self.teacher.assign_teaching(course)

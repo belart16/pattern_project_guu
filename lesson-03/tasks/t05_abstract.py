@@ -1,6 +1,7 @@
 """Тема 5. Абстрактные классы и интерфейсы (модуль abc)."""
 
 from abc import ABC, abstractmethod
+import math
 
 
 class Shape(ABC):
@@ -26,7 +27,7 @@ class Circle(Shape):
         self.radius = radius
 
     def area(self):
-        raise NotImplementedError("Реализуйте Circle.area")
+        return math.pi * self.radius ** 2
 
 
 class Rectangle(Shape):
@@ -35,7 +36,7 @@ class Rectangle(Shape):
         self.height = height
 
     def area(self):
-        raise NotImplementedError("Реализуйте Rectangle.area")
+        return self.width * self.height
 
 
 class Animal(ABC):
@@ -58,12 +59,12 @@ class Animal(ABC):
         raise NotImplementedError("Реализуйте Animal.speak")
 
     def introduce(self):
-        raise NotImplementedError("Реализуйте Animal.introduce")
+        return f"Я говорю: {self.speak()}"
 
 
 class Cat(Animal):
     def speak(self):
-        raise NotImplementedError("Реализуйте Cat.speak")
+        return "мяу"
 
 
 class Vehicle(ABC):
@@ -89,7 +90,7 @@ class Car(Vehicle):
 
     @property
     def max_speed(self):
-        raise NotImplementedError("Реализуйте Car.max_speed")
+        return 220
 
 
 class Plugin(ABC):
@@ -113,7 +114,7 @@ class Plugin(ABC):
 
     @classmethod
     def subclasses(cls):
-        raise NotImplementedError("Реализуйте Plugin.subclasses")
+        return sorted(subclass.__name__ for subclass in cls.__subclasses__())
 
 
 class Serializable(ABC):
@@ -141,7 +142,7 @@ def task_35(items):
         task_35([Book("а"), Book("б")]) == [{"title": "а"}, {"title": "б"}]
         task_35([]) == []
     """
-    raise NotImplementedError("Реализуйте task_35")
+    return [item.to_dict() for item in items]
 
 
 class Item:
@@ -179,25 +180,40 @@ class Box(ABC):
 
 
 class ListBox(Box):
+    def __init__(self):
+        self.items = []
+
     def add(self, item):
-        raise NotImplementedError("Реализуйте ListBox.add")
+        self.items.append(item)
 
     def empty(self):
-        raise NotImplementedError("Реализуйте ListBox.empty")
+        items = self.items
+        self.items = []
+        return items
 
     def count(self):
-        raise NotImplementedError("Реализуйте ListBox.count")
+        return len(self.items)
 
 
 class DictBox(Box):
+    def __init__(self):
+        self.items = {}
+
     def add(self, item):
-        raise NotImplementedError("Реализуйте DictBox.add")
+        # Используем уникальный ключ, чтобы предметы с одинаковыми
+        # именами также могли храниться в коробке.
+        key = len(self.items)
+        while key in self.items:
+            key += 1
+        self.items[key] = item
 
     def empty(self):
-        raise NotImplementedError("Реализуйте DictBox.empty")
+        items = list(self.items.values())
+        self.items.clear()
+        return items
 
     def count(self):
-        raise NotImplementedError("Реализуйте DictBox.count")
+        return len(self.items)
 
 
 def task_36(*boxes):
@@ -213,4 +229,23 @@ def task_36(*boxes):
         task_36(b1, b2, b3)
         sorted(b.count() for b in (b1, b2, b3)) == [11, 11, 12]
     """
-    raise NotImplementedError("Реализуйте task_36")
+    if not boxes:
+        return
+
+    # Собираем все предметы и одновременно опустошаем коробки.
+    all_items = []
+    for box in boxes:
+        all_items.extend(box.empty())
+
+    # Рассчитываем равномерное распределение.
+    total = len(all_items)
+    number_of_boxes = len(boxes)
+    base, remainder = divmod(total, number_of_boxes)
+
+    # Первые коробки получают на один предмет больше, если есть остаток.
+    index = 0
+    for i, box in enumerate(boxes):
+        amount = base + (1 if i < remainder else 0)
+        for item in all_items[index:index + amount]:
+            box.add(item)
+        index += amount
