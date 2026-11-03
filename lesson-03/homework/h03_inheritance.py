@@ -17,7 +17,7 @@ class PersonA:
         self.name = name
 
     def introduce(self):
-        raise NotImplementedError("Реализуйте PersonA.introduce")
+        return f"Меня зовут {self.name}"
 
 
 class StudentA(PersonA):
@@ -26,7 +26,7 @@ class StudentA(PersonA):
         self.university = university
 
     def introduce(self):
-        raise NotImplementedError("Реализуйте StudentA.introduce (через super())")
+        return f"{super().introduce()}, учусь в {self.university}"
 
 
 class BaseAccount:
@@ -48,22 +48,26 @@ class BaseAccount:
     """
 
     def __init__(self, owner, balance):
-        raise NotImplementedError("Реализуйте BaseAccount.__init__")
+        self._owner = owner
+        self._balance = balance
 
     @property
     def balance(self):
-        raise NotImplementedError("Реализуйте BaseAccount.balance")
+        return self._balance
 
     def deposit(self, amount):
-        raise NotImplementedError("Реализуйте BaseAccount.deposit")
+        self._balance += amount
 
 
 class SavingsAccount(BaseAccount):
     def __init__(self, owner, balance, rate):
-        raise NotImplementedError("Реализуйте SavingsAccount.__init__")
+        super().__init__(owner, balance)
+        self._rate = rate
 
     def add_interest(self):
-        raise NotImplementedError("Реализуйте SavingsAccount.add_interest")
+        interest = self._balance * self._rate / 100
+        self._balance += interest
+        return round(self._balance, 2)
 
 
 class QueueList(list):
@@ -87,13 +91,13 @@ class QueueList(list):
     """
 
     def enqueue(self, item):
-        raise NotImplementedError("Реализуйте QueueList.enqueue")
+        self.append(item)
 
     def dequeue(self):
-        raise NotImplementedError("Реализуйте QueueList.dequeue")
+        return self.pop(0)
 
     def front(self):
-        raise NotImplementedError("Реализуйте QueueList.front")
+        return self[0]
 
     def size(self):
-        raise NotImplementedError("Реализуйте QueueList.size")
+        return len(self)

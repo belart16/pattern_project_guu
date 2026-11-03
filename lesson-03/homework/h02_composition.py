@@ -12,7 +12,7 @@ class BoatEngine:
         self.hp = hp
 
     def start(self):
-        raise NotImplementedError("Реализуйте BoatEngine.start")
+        return "двигатель заведён"
 
 
 class Boat:
@@ -25,11 +25,11 @@ class Boat:
     """
 
     def __init__(self, name, engine):
-        raise NotImplementedError("Реализуйте Boat.__init__")
+        self.name = name
+        self.engine = engine
 
     def sail(self):
-        raise NotImplementedError("Реализуйте Boat.sail")
-
+        return f"{self.name}: {self.engine.start()}"
 
 class Page:
     """Задание 06, часть 1. Страница: заголовок и число слов."""
@@ -55,16 +55,16 @@ class Notebook:
     """
 
     def __init__(self):
-        raise NotImplementedError("Реализуйте Notebook.__init__")
+        self._pages = []
 
     def add_page(self, page):
-        raise NotImplementedError("Реализуйте Notebook.add_page")
+        self._pages.append(page)
 
     def total_words(self):
-        raise NotImplementedError("Реализуйте Notebook.total_words")
+        return sum(page.words for page in self._pages)
 
     def longest_page(self):
-        raise NotImplementedError("Реализуйте Notebook.longest_page")
+        return max(self._pages, key=lambda page: page.words).title
 
 
 class Greeter:
@@ -85,7 +85,8 @@ class Greeter:
     """
 
     def __init__(self, logger):
-        raise NotImplementedError("Реализуйте Greeter.__init__")
+        self.logger = logger
 
     def greet(self, name):
-        raise NotImplementedError("Реализуйте Greeter.greet")
+        self.logger.log(f"приветствие: {name}")
+        return f"Привет, {name}!"
