@@ -17,10 +17,12 @@ class TextTransformer:
     """
 
     def __init__(self, rules):
-        raise NotImplementedError("Реализуйте TextTransformer.__init__")
+        self._rules = rules
 
     def apply(self, text):
-        raise NotImplementedError("Реализуйте TextTransformer.apply")
+        for rule in self._rules:
+            text = rule(text)
+        return text
 
 
 class PaymentMethod(ABC):
@@ -38,25 +40,25 @@ class PaymentMethod(ABC):
 
     @abstractmethod
     def pay(self, amount):
-        raise NotImplementedError("Реализуйте PaymentMethod.pay")
+        pass
 
 
 class CardMethod(PaymentMethod):
     def pay(self, amount):
-        raise NotImplementedError("Реализуйте CardMethod.pay")
+        return f"оплачено картой {amount}"
 
 
 class CashMethod(PaymentMethod):
     def pay(self, amount):
-        raise NotImplementedError("Реализуйте CashMethod.pay")
+        return f"оплачено наличными {amount}"
 
 
 class Checkout:
     def __init__(self, method):
-        raise NotImplementedError("Реализуйте Checkout.__init__")
+        self._method = method
 
     def pay(self, amount):
-        raise NotImplementedError("Реализуйте Checkout.pay")
+        return self._method.pay(amount)
 
 
 class Sword:
@@ -74,20 +76,27 @@ class Sword:
     """
 
     def attack(self):
-        raise NotImplementedError("Реализуйте Sword.attack")
+        return "удар мечом"
 
 
 class Bow:
     def attack(self):
-        raise NotImplementedError("Реализуйте Bow.attack")
+        return "выстрел из лука"
 
 
 class Character:
     def __init__(self, name, weapon):
-        raise NotImplementedError("Реализуйте Character.__init__")
+        self._name = name
+        self._weapon = weapon
 
     def set_weapon(self, weapon):
-        raise NotImplementedError("Реализуйте Character.set_weapon")
+        self._weapon = weapon
 
     def attack(self):
-        raise NotImplementedError("Реализуйте Character.attack")
+        return f"{self._name}: {self._weapon.attack()}"
+
+    def set_weapon(self, weapon):
+        self._weapon = weapon
+
+    def attack(self):
+        return f"{self._name}: {self._weapon.attack()}"

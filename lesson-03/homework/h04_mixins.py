@@ -18,7 +18,8 @@ class DescribeMixin:
     """
 
     def describe(self):
-        raise NotImplementedError("Реализуйте DescribeMixin.describe")
+        attrs = ", ".join(f"{k}={v}" for k, v in self.__dict__.items())
+        return f"{type(self).__name__}: {attrs}"
 
 
 class EqMixin:
@@ -40,7 +41,9 @@ class EqMixin:
         raise NotImplementedError("Носитель миксина должен реализовать fields()")
 
     def __eq__(self, other):
-        raise NotImplementedError("Реализуйте EqMixin.__eq__")
+        if not isinstance(other, type(self)):
+            return False
+        return all(getattr(self, field) == getattr(other, field) for field in self.fields())
 
 
 class Book(EqMixin):
@@ -49,7 +52,7 @@ class Book(EqMixin):
         self.author = author
 
     def fields(self):
-        raise NotImplementedError("Реализуйте Book.fields")
+        return ("title", "author")
 
 
 class P:
@@ -67,22 +70,22 @@ class P:
     """
 
     def who(self):
-        raise NotImplementedError("Реализуйте P.who")
+        return "P"
 
 
 class Q(P):
     def who(self):
-        raise NotImplementedError("Реализуйте Q.who")
+        return f"Q->" + super().who()
 
 
 class R(P):
     def who(self):
-        raise NotImplementedError("Реализуйте R.who")
+        return f"R->" + super().who()
 
 
 class S(Q, R):
     def who(self):
-        raise NotImplementedError("Реализуйте S.who")
+        return f"S->" + super().who()
 
 
 class StatsMixin:
@@ -106,7 +109,11 @@ class StatsMixin:
     """
 
     def remember(self, value):
-        raise NotImplementedError("Реализуйте StatsMixin.remember")
+        if not hasattr(self, '_log'):
+            self._log = []
+        self._log.append(value)
 
     def average(self):
-        raise NotImplementedError("Реализуйте StatsMixin.average")
+        if not hasattr(self, '_log'):
+            return 0
+        return sum(self._log) / len(self._log)

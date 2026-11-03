@@ -18,15 +18,15 @@ class SoundSource(ABC):
 
     @abstractmethod
     def make_sound(self):
-        raise NotImplementedError("Реализуйте SoundSource.make_sound")
+        pass
 
     def speak(self, times=1):
-        raise NotImplementedError("Реализуйте SoundSource.speak")
+        return " ".join(self.make_sound() for _ in range(times))
 
 
 class DogSound(SoundSource):
     def make_sound(self):
-        raise NotImplementedError("Реализуйте DogSound.make_sound")
+        return "гав"
 
 
 class Storage(ABC):
@@ -44,20 +44,22 @@ class Storage(ABC):
 
     @abstractmethod
     def save(self, key, value):
-        raise NotImplementedError("Реализуйте Storage.save")
+        pass
 
     @abstractmethod
     def load(self, key):
-        raise NotImplementedError("Реализуйте Storage.load")
+        pass
 
 
 class MemoryStorage(Storage):
+    def __init__(self):
+        self._data = {}
+
     def save(self, key, value):
-        raise NotImplementedError("Реализуйте MemoryStorage.save")
+        self._data[key] = value
 
     def load(self, key):
-        raise NotImplementedError("Реализуйте MemoryStorage.load")
-
+        return self._data.get(key)
 
 class Sealed:
     """Задание 17. Запрет наследования.
@@ -72,4 +74,4 @@ class Sealed:
     """
 
     def __init_subclass__(cls, **kwargs):
-        raise NotImplementedError("Реализуйте Sealed.__init_subclass__")
+        raise TypeError("Наследование от Sealed запрещено")
