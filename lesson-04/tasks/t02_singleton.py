@@ -1,3 +1,4 @@
+
 """Тема 2. Singleton: единственный экземпляр через __new__."""
 
 
@@ -17,7 +18,9 @@ class President:
     """
 
     def __new__(cls):
-        raise NotImplementedError("Реализуйте President.__new__")
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+        return cls._instance
 
 
 class Database:
@@ -36,10 +39,16 @@ class Database:
     """
 
     def __new__(cls):
-        raise NotImplementedError("Реализуйте Database.__new__")
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+            cls._instance._data = {
+                "users": 42,
+                "orders": 7
+            }
+        return cls._instance
 
     def query(self, key):
-        raise NotImplementedError("Реализуйте Database.query")
+        return self._data.get(key)
 
 
 class State:
@@ -56,18 +65,24 @@ class State:
         State() is State()
         s1 = State()
         s1.set("x", 1)
-        s2 = State()          # __init__ отработал ещё раз
-        s2.get("x") == 1      # ...но данные не потерялись
+        s2 = State()
+        s2.get("x") == 1
     """
 
     def __new__(cls):
-        raise NotImplementedError("Реализуйте State.__new__")
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+    def __init__(self):
+        if not hasattr(self, "_data"):
+            self._data = {}
 
     def set(self, key, value):
-        raise NotImplementedError("Реализуйте State.set")
+        self._data[key] = value
 
     def get(self, key, default=None):
-        raise NotImplementedError("Реализуйте State.get")
+        return self._data.get(key, default)
 
 
 class IdGenerator:
@@ -86,10 +101,14 @@ class IdGenerator:
     """
 
     def __new__(cls):
-        raise NotImplementedError("Реализуйте IdGenerator.__new__")
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+            cls._instance._counter = 0
+        return cls._instance
 
     def next(self):
-        raise NotImplementedError("Реализуйте IdGenerator.next")
+        self._counter += 1
+        return self._counter
 
 
 class Universe:
@@ -106,11 +125,16 @@ class Universe:
     """
 
     def __new__(cls):
-        raise NotImplementedError("Реализуйте Universe.__new__")
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+            cls._creations = 0
+
+        cls._creations += 1
+        return cls._instance
 
     @classmethod
     def creations(cls):
-        raise NotImplementedError("Реализуйте Universe.creations")
+        return getattr(cls, "_creations", 0)
 
 
 class License:
@@ -129,7 +153,15 @@ class License:
     """
 
     def __new__(cls):
-        raise NotImplementedError("Реализуйте License.__new__")
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+            cls._instance.owner = None
+            cls._instance._assigned = False
+        return cls._instance
 
     def assign(self, owner):
-        raise NotImplementedError("Реализуйте License.assign")
+        if self._assigned:
+            raise ValueError("лицензия уже выдана")
+
+        self.owner = owner
+        self._assigned = True
