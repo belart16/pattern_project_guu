@@ -1,3 +1,4 @@
+
 """Тема 5. Порождающие вместе: синглтон + фабрика, ленивые реестры."""
 
 
@@ -24,9 +25,12 @@ def task_25():
     Примеры:
         task_25() is task_25()
         task_25().log("старт")
-        task_25().messages == ["старт"]   # журнал общий
+        task_25().messages == ["старт"]
     """
-    raise NotImplementedError("Реализуйте task_25")
+    if not hasattr(task_25, "_instance"):
+        task_25._instance = Logger()
+
+    return task_25._instance
 
 
 class Pool:
@@ -43,17 +47,26 @@ class Pool:
         first = p.acquire()      # "conn-1"
         second = p.acquire()     # "conn-2"
         p.release(first)
-        p.acquire() == "conn-1"  # переиспользовали
+        p.acquire() == "conn-1"
     """
 
     def __new__(cls):
-        raise NotImplementedError("Реализуйте Pool.__new__")
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+            cls._instance._counter = 0
+            cls._instance._available = []
+
+        return cls._instance
 
     def acquire(self):
-        raise NotImplementedError("Реализуйте Pool.acquire")
+        if self._available:
+            return self._available.pop()
+
+        self._counter += 1
+        return f"conn-{self._counter}"
 
     def release(self, conn):
-        raise NotImplementedError("Реализуйте Pool.release")
+        self._available.append(conn)
 
 
 def task_27(func):
@@ -72,10 +85,20 @@ def task_27(func):
         fast = task_27(slow)
         fast(2) == 4
         fast(2) == 4
-        calls == [2]              # второй раз не считали
+        calls == [2]
         fast.cache == {(2,): 4}
     """
-    raise NotImplementedError("Реализуйте task_27")
+    cache = {}
+
+    def wrapper(*args):
+        if args not in cache:
+            cache[args] = func(*args)
+
+        return cache[args]
+
+    wrapper.cache = cache
+
+    return wrapper
 
 
 class AppConfig:
@@ -94,16 +117,23 @@ class AppConfig:
     """
 
     def __new__(cls):
-        raise NotImplementedError("Реализуйте AppConfig.__new__")
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+
+        return cls._instance
+
+    def __init__(self):
+        if not hasattr(self, "_settings"):
+            self._settings = {}
 
     def set(self, key, value):
-        raise NotImplementedError("Реализуйте AppConfig.set")
+        self._settings[key] = value
 
     def get(self, key, default=None):
-        raise NotImplementedError("Реализуйте AppConfig.get")
+        return self._settings.get(key, default)
 
     def keys(self):
-        raise NotImplementedError("Реализуйте AppConfig.keys")
+        return sorted(self._settings.keys())
 
 
 class Registry:
@@ -123,13 +153,21 @@ class Registry:
     """
 
     def __init__(self):
-        raise NotImplementedError("Реализуйте Registry.__init__")
+        self._factories = {}
+        self._instances = {}
 
     def register(self, name, factory):
-        raise NotImplementedError("Реализуйте Registry.register")
+        self._factories[name] = factory
+        self._instances.pop(name, None)
 
     def get(self, name):
-        raise NotImplementedError("Реализуйте Registry.get")
+        if name not in self._factories:
+            raise KeyError(name)
+
+        if name not in self._instances:
+            self._instances[name] = self._factories[name]()
+
+        return self._instances[name]
 
 
 class SimpleTask:
@@ -159,7 +197,15 @@ class TaskFactory:
 
     @staticmethod
     def create(kind, name):
-        raise NotImplementedError("Реализуйте TaskFactory.create")
+        tasks = {
+            "simple": SimpleTask,
+            "delayed": DelayedTask,
+        }
+
+        if kind not in tasks:
+            raise ValueError("неизвестный тип задачи")
+
+        return tasks[kind](name)
 
 
 class Scheduler:
@@ -176,14 +222,21 @@ class Scheduler:
         s.add(TaskFactory.create("delayed", "позвонить маме"))
         s.run_all() == ["задача купить хлеб: простая",
                         "задача позвонить маме: отложенная"]
-        s.run_all() == []        # очередь очищена
+        s.run_all() == []
     """
 
     def __new__(cls):
-        raise NotImplementedError("Реализуйте Scheduler.__new__")
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+            cls._instance._tasks = []
+
+        return cls._instance
 
     def add(self, task):
-        raise NotImplementedError("Реализуйте Scheduler.add")
+        self._tasks.append(task)
 
     def run_all(self):
-        raise NotImplementedError("Реализуйте Scheduler.run_all")
+        results = [task.describe() for task in self._tasks]
+        self._tasks.clear()
+
+        return results

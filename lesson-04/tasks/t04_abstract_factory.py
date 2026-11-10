@@ -1,3 +1,4 @@
+
 """Тема 4. Abstract Factory: семейства продуктов."""
 
 
@@ -30,10 +31,10 @@ class LightFactory:
     """
 
     def create_button(self):
-        raise NotImplementedError("Реализуйте LightFactory.create_button")
+        return Button("светлая")
 
     def create_checkbox(self):
-        raise NotImplementedError("Реализуйте LightFactory.create_checkbox")
+        return Checkbox("светлая")
 
 
 class DarkFactory:
@@ -45,10 +46,10 @@ class DarkFactory:
     """
 
     def create_button(self):
-        raise NotImplementedError("Реализуйте DarkFactory.create_button")
+        return Button("тёмная")
 
     def create_checkbox(self):
-        raise NotImplementedError("Реализуйте DarkFactory.create_checkbox")
+        return Checkbox("тёмная")
 
 
 def task_20(factory):
@@ -62,7 +63,10 @@ def task_20(factory):
         task_20(LightFactory()) == ["светлая кнопка", "светлая галочка"]
         task_20(DarkFactory()) == ["тёмная кнопка", "тёмная галочка"]
     """
-    raise NotImplementedError("Реализуйте task_20")
+    button = factory.create_button()
+    checkbox = factory.create_checkbox()
+
+    return [button.render(), checkbox.render()]
 
 
 def task_21(theme):
@@ -76,7 +80,15 @@ def task_21(theme):
         task_21("dark").create_button().render() == "тёмная кнопка"
         task_21("retro")  # ValueError: неизвестная тема
     """
-    raise NotImplementedError("Реализуйте task_21")
+    factories = {
+        "light": LightFactory,
+        "dark": DarkFactory,
+    }
+
+    if theme not in factories:
+        raise ValueError("неизвестная тема")
+
+    return factories[theme]()
 
 
 class Chair:
@@ -108,10 +120,10 @@ class ModernFactory:
     """
 
     def create_chair(self):
-        raise NotImplementedError("Реализуйте ModernFactory.create_chair")
+        return Chair("современный")
 
     def create_sofa(self):
-        raise NotImplementedError("Реализуйте ModernFactory.create_sofa")
+        return Sofa("современный")
 
 
 class ClassicFactory:
@@ -123,10 +135,10 @@ class ClassicFactory:
     """
 
     def create_chair(self):
-        raise NotImplementedError("Реализуйте ClassicFactory.create_chair")
+        return Chair("классический")
 
     def create_sofa(self):
-        raise NotImplementedError("Реализуйте ClassicFactory.create_sofa")
+        return Sofa("классический")
 
 
 class TaggedButton:
@@ -148,7 +160,12 @@ def task_23(items):
         task_23([TaggedButton("light"), TaggedButton("dark")]) == False
         task_23([]) == True
     """
-    raise NotImplementedError("Реализуйте task_23")
+    if not items:
+        return True
+
+    family = items[0].family
+
+    return all(item.family == family for item in items)
 
 
 def task_24(theme):
@@ -162,4 +179,5 @@ def task_24(theme):
         task_24("light") == ["светлая кнопка", "светлая галочка"]
         task_24("dark") == ["тёмная кнопка", "тёмная галочка"]
     """
-    raise NotImplementedError("Реализуйте task_24")
+    factory = task_21(theme)
+    return task_20(factory)
