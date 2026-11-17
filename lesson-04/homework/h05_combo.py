@@ -17,14 +17,19 @@ class Settings:
         Settings().get("нет", 0) == 0
     """
 
+    _instance = None
+
     def __new__(cls):
-        raise NotImplementedError("Реализуйте Settings.__new__")
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._data = {"тема": "светлая", "язык": "ru"}
+        return cls._instance
 
     def set(self, key, value):
-        raise NotImplementedError("Реализуйте Settings.set")
+        self._data[key] = value
 
     def get(self, key, default=None):
-        raise NotImplementedError("Реализуйте Settings.get")
+        return self._data.get(key, default)
 
 
 def hw_16(func):
@@ -46,7 +51,12 @@ def hw_16(func):
         wrapped.calls == 2
         calls == [1, 2]
     """
-    raise NotImplementedError("Реализуйте hw_16")
+    def wrapper(*args, **kwargs):
+        wrapper.calls += 1
+        return func(*args, **kwargs)
+
+    wrapper.calls = 0
+    return wrapper
 
 
 class Cache:
@@ -63,11 +73,20 @@ class Cache:
         Cache().get("нет") is None
     """
 
+    _instance = None
+
     def __new__(cls):
-        raise NotImplementedError("Реализуйте Cache.__new__")
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._cache = {}
+        return cls._instance
+
+    def __init__(self):
+        # Защита от повторной инициализации
+        pass
 
     def put(self, key, value):
-        raise NotImplementedError("Реализуйте Cache.put")
+        self._cache[key] = value
 
     def get(self, key):
-        raise NotImplementedError("Реализуйте Cache.get")
+        return self._cache.get(key)

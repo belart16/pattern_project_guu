@@ -12,7 +12,9 @@ def hw_18(data):
         hw_18([3, 1, 2]) == {"max": 3, "min": 1, "len": 3}
         hw_18([]) == {"max": None, "min": None, "len": 0}
     """
-    raise NotImplementedError("Реализуйте hw_18")
+    if not data:
+        return {"max": None, "min": None, "len": 0}
+    return {"max": max(data), "min": min(data), "len": len(data)}
 
 
 def hw_19():
@@ -27,7 +29,11 @@ def hw_19():
         ops["-"](10, 4) == 6
         ops["*"](3, 3) == 9
     """
-    raise NotImplementedError("Реализуйте hw_19")
+    return {
+        "+": lambda a, b: a + b,
+        "-": lambda a, b: a - b,
+        "*": lambda a, b: a * b,
+    }
 
 
 def hw_20(problem):
@@ -41,4 +47,4 @@ def hw_20(problem):
         hw_20("несколько реализаций на вчера") == False
         hw_20("просто общий интерфейс без реализаций") == False
     """
-    raise NotImplementedError("Реализуйте hw_20")
+    return "несколько реализаций" in problem and "общий интерфейс" in problem
