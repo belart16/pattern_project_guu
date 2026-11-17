@@ -30,10 +30,10 @@ class LightPageFactory:
     """
 
     def create_header(self):
-        raise NotImplementedError("Реализуйте LightPageFactory.create_header")
+        return Header("light")
 
     def create_footer(self):
-        raise NotImplementedError("Реализуйте LightPageFactory.create_footer")
+        return Footer("light")
 
 
 class DarkPageFactory:
@@ -45,10 +45,10 @@ class DarkPageFactory:
     """
 
     def create_header(self):
-        raise NotImplementedError("Реализуйте DarkPageFactory.create_header")
+        return Header("dark")
 
     def create_footer(self):
-        raise NotImplementedError("Реализуйте DarkPageFactory.create_footer")
+        return Footer("dark")
 
 
 def hw_12(factory):
@@ -61,7 +61,9 @@ def hw_12(factory):
         hw_12(LightPageFactory()) == "[light] шапка\\n[light] подвал"
         hw_12(DarkPageFactory()) == "[dark] шапка\\n[dark] подвал"
     """
-    raise NotImplementedError("Реализуйте hw_12")
+    header = factory.create_header().render()
+    footer = factory.create_footer().render()
+    return header + "\n" + footer
 
 
 class MobileMenu:
@@ -91,7 +93,7 @@ class MobileUIFactory:
     """
 
     def create_menu(self):
-        raise NotImplementedError("Реализуйте MobileUIFactory.create_menu")
+        return MobileMenu()
 
 
 class DesktopUIFactory:
@@ -103,7 +105,7 @@ class DesktopUIFactory:
     """
 
     def create_menu(self):
-        raise NotImplementedError("Реализуйте DesktopUIFactory.create_menu")
+        return DesktopMenu()
 
 
 def hw_14(first, second):
@@ -116,4 +118,4 @@ def hw_14(first, second):
         hw_14(MobileUIFactory(), MobileUIFactory()) == True
         hw_14(MobileUIFactory(), DesktopUIFactory()) == False
     """
-    raise NotImplementedError("Реализуйте hw_14")
+    return first.create_menu().platform == second.create_menu().platform

@@ -14,11 +14,16 @@ class Capital:
         Capital().name == "Пермь"
     """
 
+    _instance = None
+
     def __new__(cls):
-        raise NotImplementedError("Реализуйте Capital.__new__")
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.name = "не установлен"
+        return cls._instance
 
     def rename(self, new_name):
-        raise NotImplementedError("Реализуйте Capital.rename")
+        self.name = new_name
 
 
 class Fibonacci:
@@ -37,11 +42,24 @@ class Fibonacci:
         Fibonacci().next() == 2
     """
 
+    _instance = None
+
     def __new__(cls):
-        raise NotImplementedError("Реализуйте Fibonacci.__new__")
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._a = 0
+            cls._instance._b = 1
+            cls._instance._initialized = True
+        return cls._instance
+
+    def __init__(self):
+        # Защита от повторной инициализации (состояние уже задано в __new__)
+        pass
 
     def next(self):
-        raise NotImplementedError("Реализуйте Fibonacci.next")
+        value = self._a
+        self._a, self._b = self._b, self._a + self._b
+        return value
 
 
 class God:
@@ -58,12 +76,17 @@ class God:
         God.prayers() == 2
     """
 
+    _instance = None
+    _prayers = 0
+
     def __new__(cls):
-        raise NotImplementedError("Реализуйте God.__new__")
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
 
     def pray(self):
-        raise NotImplementedError("Реализуйте God.pray")
+        God._prayers += 1
 
     @classmethod
     def prayers(cls):
-        raise NotImplementedError("Реализуйте God.prayers")
+        return cls._prayers

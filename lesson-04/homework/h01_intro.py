@@ -16,7 +16,10 @@ def hw_01(name):
         hw_01("Observer") == "поведенческие"
         hw_01("Adapter") is None
     """
-    raise NotImplementedError("Реализуйте hw_01")
+    for group, patterns in MINI_GROUPS.items():
+        if name in patterns:
+            return group
+    return None
 
 
 def hw_02():
@@ -30,7 +33,9 @@ def hw_02():
     Примеры:
         hw_02() == ["Abstract Factory", "Builder", "Factory Method", "Prototype", "Singleton"]
     """
-    raise NotImplementedError("Реализуйте hw_02")
+    from tasks import t01_intro
+
+    return sorted(t01_intro.GROUPS["порождающие"])
 
 
 class Ticker:
@@ -52,14 +57,19 @@ class Ticker:
         t.previous() == 10
     """
 
+    def __init__(self):
+        self._current = None
+        self._previous = None
+
     def tick(self, value):
-        raise NotImplementedError("Реализуйте Ticker.tick")
+        self._previous = self._current
+        self._current = value
 
     def current(self):
-        raise NotImplementedError("Реализуйте Ticker.current")
+        return self._current
 
     def previous(self):
-        raise NotImplementedError("Реализуйте Ticker.previous")
+        return self._previous
 
 
 def hw_04(name):
@@ -75,4 +85,9 @@ def hw_04(name):
         hw_04("Observer") == "уведомление подписчиков"
         hw_04("MVC") is None
     """
-    raise NotImplementedError("Реализуйте hw_04")
+    INTENTIONS = {
+        "Singleton": "единственный экземпляр",
+        "Builder": "пошаговая сборка сложного объекта",
+        "Observer": "уведомление подписчиков",
+    }
+    return INTENTIONS.get(name)

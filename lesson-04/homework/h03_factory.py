@@ -24,7 +24,11 @@ def hw_08(kind):
         isinstance(hw_08("postgres"), PostgresConnection)
         hw_08("oracle")  # ValueError: неизвестная база
     """
-    raise NotImplementedError("Реализуйте hw_08")
+    if kind == "sqlite":
+        return SQLiteConnection()
+    if kind == "postgres":
+        return PostgresConnection()
+    raise ValueError("неизвестная база")
 
 
 class Dog2:
@@ -58,7 +62,11 @@ class AnimalFactory:
 
     @classmethod
     def create(cls, kind, name):
-        raise NotImplementedError("Реализуйте AnimalFactory.create")
+        if kind == "dog":
+            return Dog2(name)
+        if kind == "cat":
+            return Cat2(name)
+        raise ValueError("неизвестное животное")
 
 
 class CsvReport:
@@ -83,4 +91,8 @@ def hw_10(fmt):
         hw_10("csv").render([1, 2]) == "1;2"
         hw_10("json").render([7, 9]) == '{"0": 7, "1": 9}'
     """
-    raise NotImplementedError("Реализуйте hw_10")
+    if fmt == "csv":
+        return CsvReport()
+    if fmt == "json":
+        return JsonReport()
+    raise ValueError("неизвестный формат")
